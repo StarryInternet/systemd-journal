@@ -1,0 +1,10 @@
+[package]
+name = "sd-journal"
+version = "0.1.0"
+authors = ["Milo Turner <mturner@starry.com>"]
+edition = "2018"
+keywords = ["systemd", "sd_journal"]
+license-file = "LICENSE"
+readme = "README.md"
+
+[dependencies]
