@@ -8,3 +8,6 @@ license-file = "LICENSE"
 readme = "README.md"
 
 [dependencies]
+
+[build-dependencies]
+pkg-config = "0.3"
