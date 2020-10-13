@@ -159,14 +159,3 @@ impl log::Log for Journal {
 
     fn flush(&self) {}
 }
-
-#[cfg(test)]
-mod test {
-    #[cfg(feature = "log")]
-    fn _set_logger_typechecks() {
-        use super::Journal;
-        let jrn = Journal::new();
-        let jrn: &'static Journal = unsafe { &*(&jrn as *const _) };
-        log::set_logger(jrn).unwrap();
-    }
-}
