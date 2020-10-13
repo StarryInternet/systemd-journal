@@ -79,7 +79,8 @@ impl<'jrn> JournalEntry<'jrn> {
         };
         if ret == 0 {
             let data = unsafe { std::slice::from_raw_parts(data, length) };
-            Ok(Some(data))
+            let skip_len = field.to_bytes().len() + 1;
+            Ok(Some(&data[skip_len..]))
         } else if ret == -2 {
             // -ENOENT
             Ok(None)
