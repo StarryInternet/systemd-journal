@@ -33,12 +33,44 @@ pub struct Journal {
 impl Journal {
     /// Constructs a new `systemd` journal handle.
     pub fn new() -> Self {
-        Journal {
+        Self {
             imp: Mutex::new(Imp::new())
         }
     }
 
+    /// Constructs a new `systemd` journal handle, that is configured to send journal logs on behalf
+    /// of another process.
+    ///
+    /// See `OBJECT_PID` in `systemd.journal-fields` man page for more information on this setting.
+    ///
+    /// # Arguments
+    ///
+    /// * `pid` - OS-assigned process identifier for the target process.
+    pub fn with_object_pid(pid: u32) -> Self {
+        let mut imp = Imp::new();
+        imp.set_process_id(pid);
+        Self {
+            imp: Mutex::new(imp)
+        }
+    }
+
     /// Sends a log entry to the journal.
+    ///
+    /// # Arguments
+    ///
+    /// * `pri` - Log priority level.
+    /// * `msg` - Log message.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// # use sd_journal::{Priority, Journal};
+    /// # fn main() -> std::io::Result<()> {
+    /// let jrn = Journal::new();
+    /// jrn.send(Priority::Info, "Hello, world!")?;
+    /// # Ok(())
+    /// # }
+    /// ```
     pub fn send(&self, pri: Priority, msg: impl std::fmt::Display) -> std::io::Result<()> {
         let mut imp = self.imp.lock().expect("journal lock poisoned");
         imp.set_priority(pri);
@@ -50,6 +82,7 @@ impl Journal {
 struct Imp {
     pri_field: String,
     msg_field: String,
+    pid_field: String,
     iovecs: Vec<ffi::IoVec>,
 }
 
@@ -58,7 +91,8 @@ impl Imp {
         Self {
             pri_field: String::with_capacity(10),
             msg_field: String::with_capacity(64),
-            iovecs: Vec::with_capacity(2)
+            pid_field: String::new(),
+            iovecs: Vec::with_capacity(3)
         }
     }
 
@@ -72,10 +106,18 @@ impl Imp {
         write!(self.msg_field, "MESSAGE={}", msg).unwrap();
     }
 
+    fn set_process_id(&mut self, pid: u32) {
+        self.pid_field.clear();
+        write!(self.pid_field, "OBJECT_PID={}", pid).unwrap();
+    }
+
     fn prepare(&mut self) -> &[ffi::IoVec] {
         self.iovecs.clear();
         self.iovecs.push(ffi::IoVec::from_str(&self.pri_field));
         self.iovecs.push(ffi::IoVec::from_str(&self.msg_field));
+        if !self.pid_field.is_empty() {
+            self.iovecs.push(ffi::IoVec::from_str(&self.pid_field));
+        }
         &self.iovecs
     }
 
