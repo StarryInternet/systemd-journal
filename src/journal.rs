@@ -1,6 +1,6 @@
 //! Contains an abstract for a handle to the systemd journal.
 
-use std::{sync::Mutex, fmt::Write as _};
+use std::{fmt::Write as _, sync::Mutex};
 
 use crate::ffi;
 
@@ -27,7 +27,7 @@ pub enum Priority {
 
 /// Handle to the `systemd` journal.
 pub struct Journal {
-    imp: Mutex<Imp>,
+    imp: Mutex<Imp>
 }
 
 impl Journal {
@@ -83,7 +83,7 @@ struct Imp {
     pri_field: String,
     msg_field: String,
     pid_field: String,
-    iovecs: Vec<ffi::IoVec>,
+    iovecs: Vec<ffi::IoVec>
 }
 
 impl Imp {
