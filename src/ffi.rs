@@ -8,6 +8,15 @@ pub struct IoVec {
     pub len: usize
 }
 
+impl IoVec {
+    pub fn from_str(s: &str) -> Self {
+        Self {
+            base: s.as_ptr() as *const _,
+            len: s.len()
+        }
+    }
+}
+
 extern "C" {
     pub fn sd_journal_sendv(iov: *const IoVec, n: c_int) -> c_int;
 }
