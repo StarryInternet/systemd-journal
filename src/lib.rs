@@ -15,7 +15,7 @@ pub use reader::{JournalEntry, JournalReader};
 /// # Examples
 ///
 /// ```no_run
-/// # use sd_journal::{Journal, info};
+/// # use systemd_journal::{Journal, info};
 /// # fn main() -> std::io::Result<()> {
 /// let jrn = Journal::new();
 /// info!(jrn, "2 + 2 = {}", 2 + 2)?;
@@ -32,7 +32,7 @@ macro_rules! info {
 /// # Examples
 ///
 /// ```no_run
-/// # use sd_journal::{Journal, warn};
+/// # use systemd_journal::{Journal, warn};
 /// # fn main() -> std::io::Result<()> {
 /// let jrn = Journal::new();
 /// warn!(jrn, "something strange happened")?;
@@ -49,7 +49,7 @@ macro_rules! warn {
 /// # Examples
 ///
 /// ```no_run
-/// # use sd_journal::{Journal, error};
+/// # use systemd_journal::{Journal, error};
 /// # fn main() -> std::io::Result<()> {
 /// let jrn = Journal::new();
 /// error!(jrn, "something bad happened!")?;

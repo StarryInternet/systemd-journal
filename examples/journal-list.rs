@@ -1,4 +1,4 @@
-use sd_journal::Journal;
+use systemd_journal::Journal;
 
 fn main() -> std::io::Result<()> {
     let jrn = Journal::new();

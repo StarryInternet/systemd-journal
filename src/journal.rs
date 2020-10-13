@@ -64,7 +64,7 @@ impl Journal {
     /// # Examples
     ///
     /// ```no_run
-    /// # use sd_journal::{Priority, Journal};
+    /// # use systemd_journal::{Priority, Journal};
     /// # fn main() -> std::io::Result<()> {
     /// let jrn = Journal::new();
     /// jrn.send(Priority::Info, "Hello, world!")?;

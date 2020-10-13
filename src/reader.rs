@@ -38,7 +38,7 @@ impl JournalReader {
     /// # Examples
     ///
     /// ```no_run
-    /// # use sd_journal::{Journal, JournalReader};
+    /// # use systemd_journal::{Journal, JournalReader};
     /// # fn main() -> std::io::Result<()> {
     /// let jrn = Journal::new();
     /// let mut reader = jrn.read()?;
@@ -98,7 +98,7 @@ impl<'jrn> JournalEntry<'jrn> {
     /// # Examples
     ///
     /// ```no_run
-    /// # use sd_journal::{Journal, JournalReader, JournalEntry};
+    /// # use systemd_journal::{Journal, JournalReader, JournalEntry};
     /// # fn main() -> std::io::Result<()> {
     /// let jrn = Journal::new();
     /// let mut reader = jrn.read()?;
