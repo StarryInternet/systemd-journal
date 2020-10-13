@@ -28,7 +28,7 @@ impl JournalReader {
         }
     }
 
-    /// Returns the next entry in the journal.
+    /// Returns the next entry in the journal, or `None` if the last entry has been reached.
     ///
     /// Unfortunately this function must be used explicitly instead of an `Iterator` implementation
     /// being available. This is mainly because the `systemd` API has specific lifetime requirements
