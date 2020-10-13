@@ -7,7 +7,14 @@ keywords = ["systemd", "sd_journal"]
 license-file = "LICENSE"
 readme = "README.md"
 
+[features]
+default = ["log"]
+
 [dependencies]
 
 [build-dependencies]
 pkg-config = "0.3"
+
+[dependencies.log]
+version = "0.4"
+optional = true

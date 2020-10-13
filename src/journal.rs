@@ -133,3 +133,34 @@ impl Imp {
         }
     }
 }
+
+#[cfg(feature = "log")]
+impl log::Log for Journal {
+    fn enabled(&self, meta: &log::Metadata) -> bool {
+        meta.level() != log::Level::Trace
+    }
+
+    fn log(&self, rec: &log::Record) {
+        let pri = match rec.level() {
+            log::Level::Trace => unreachable!(),
+            log::Level::Debug => Priority::Debug,
+            log::Level::Info => Priority::Info,
+            log::Level::Warn => Priority::Warning,
+            log::Level::Error => Priority::Err
+        };
+        self.send(pri, rec.args()).expect("journal send failed");
+    }
+
+    fn flush(&self) {}
+}
+
+#[cfg(test)]
+mod test {
+    #[cfg(feature = "log")]
+    fn _set_logger_typechecks() {
+        use super::Journal;
+        let jrn = Journal::new();
+        let jrn: &'static Journal = unsafe { &*(&jrn as *const _) };
+        log::set_logger(jrn).unwrap();
+    }
+}
