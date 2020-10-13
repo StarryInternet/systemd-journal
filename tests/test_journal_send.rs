@@ -4,7 +4,8 @@ static STRING_TO_LOG: &str = "Hello from sd_journal integration test";
 
 #[test]
 fn test_journal_send() {
-    sd_journal::send(STRING_TO_LOG).unwrap();
+    let jrn = sd_journal::Journal::new();
+    sd_journal::info!(jrn, "{}", STRING_TO_LOG).unwrap();
 
     let mut cmd = std::process::Command::new("journalctl");
     cmd.args(&["-r", "-n2", "--no-pager"]);

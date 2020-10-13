@@ -4,22 +4,57 @@
 #![warn(missing_docs)]
 
 mod ffi;
+mod journal;
 
-/// Sends a message to the systemd journal.
+pub use journal::{Journal, Priority};
+
+/// Write a formatted log entry to the given `Journal` at log priority `Info`.
 ///
-/// # Arguments
+/// # Examples
 ///
-/// * `msg` - Message string to send.
-pub fn send(msg: &str) -> std::io::Result<()> {
-    let arg = format!("MESSAGE={}", msg.trim());
-    let args = [ffi::IoVec {
-        base: arg.as_ptr() as *const _,
-        len: arg.len()
-    }];
-    let ret = unsafe { ffi::sd_journal_sendv(args.as_ptr(), 1) };
-    if ret == 0 {
-        Ok(())
-    } else {
-        Err(std::io::Error::from_raw_os_error(ret))
-    }
+/// ```no_run
+/// # use sd_journal::{Journal, info};
+/// # fn main() -> std::io::Result<()> {
+/// let jrn = Journal::new();
+/// info!(jrn, "2 + 2 = {}", 2 + 2)?;
+/// # Ok(())
+/// # }
+/// ```
+#[macro_export]
+macro_rules! info {
+    ($jrn:expr, $($arg:tt)*) => ($jrn.send($crate::Priority::Info, format_args!($($arg)*)))
+}
+
+/// Write a formatted log entry to the given `Journal` at log priority `Warning`.
+///
+/// # Examples
+///
+/// ```no_run
+/// # use sd_journal::{Journal, warn};
+/// # fn main() -> std::io::Result<()> {
+/// let jrn = Journal::new();
+/// warn!(jrn, "something strange happened")?;
+/// # Ok(())
+/// # }
+/// ```
+#[macro_export]
+macro_rules! warn {
+    ($jrn:expr, $($arg:tt)*) => ($jrn.send($crate::Priority::Warning, format_args!($($arg)*)))
+}
+
+/// Write a formatted log entry to the given `Journal` at log priority `Err`.
+///
+/// # Examples
+///
+/// ```no_run
+/// # use sd_journal::{Journal, error};
+/// # fn main() -> std::io::Result<()> {
+/// let jrn = Journal::new();
+/// error!(jrn, "something bad happened!")?;
+/// # Ok(())
+/// # }
+/// ```
+#[macro_export]
+macro_rules! error {
+    ($jrn:expr, $($arg:tt)*) => ($jrn.send($crate::Priority::Err, format_args!($($arg)*)))
 }
