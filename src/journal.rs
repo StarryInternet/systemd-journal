@@ -135,7 +135,7 @@ impl Imp {
         if ret == 0 {
             Ok(())
         } else {
-            Err(std::io::Error::from_raw_os_error(ret))
+            Err(std::io::Error::from_raw_os_error(-ret))
         }
     }
 }
