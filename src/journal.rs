@@ -7,21 +7,21 @@ use crate::ffi;
 /// Log priority levels.
 #[repr(i32)]
 pub enum Priority {
-    /// LOG_EMERG from <syslog.h>.
+    /// `LOG_EMERG` from <syslog.h>.
     Emerg = 0,
-    /// LOG_ALERT from <syslog.h>.
+    /// `LOG_ALERT` from <syslog.h>.
     Alert = 1,
-    /// LOG_Crit from <syslog.h>.
+    /// `LOG_CRIT` from <syslog.h>.
     Crit = 2,
-    /// LOG_ERR from <syslog.h>.
+    /// `LOG_ERR` from <syslog.h>.
     Err = 3,
-    /// LOG_WARNING from <syslog.h>.
+    /// `LOG_WARNING` from <syslog.h>.
     Warning = 4,
-    /// LOG_NOTICE from <syslog.h>.
+    /// `LOG_NOTICE` from <syslog.h>.
     Notice = 5,
-    /// LOG_INFO from <syslog.h>.
+    /// `LOG_INFO` from <syslog.h>.
     Info = 6,
-    /// LOG_DEBUG from <syslog.h>.
+    /// `LOG_DEBUG` from <syslog.h>.
     Debug = 7
 }
 
