@@ -8,6 +8,8 @@ pub struct IoVec {
     pub len: usize
 }
 
+unsafe impl Send for IoVec {}
+
 impl IoVec {
     pub fn from_str(s: &str) -> Self {
         Self {
