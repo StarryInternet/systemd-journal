@@ -5,8 +5,10 @@
 
 mod ffi;
 mod journal;
+mod reader;
 
 pub use journal::{Journal, Priority};
+pub use reader::JournalReader;
 
 /// Write a formatted log entry to the given `Journal` at log priority `Info`.
 ///

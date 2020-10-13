@@ -19,6 +19,24 @@ impl IoVec {
     }
 }
 
+/// Used to represent `sd_journal*` pointers.
+#[repr(transparent)]
+#[derive(Copy, Clone)]
+pub struct JournalPtr {
+    _ptr: *const c_void
+}
+
+impl JournalPtr {
+    pub unsafe fn uninit() -> Self {
+        Self {
+            _ptr: std::mem::MaybeUninit::uninit().as_ptr()
+        }
+    }
+}
+
 extern "C" {
     pub fn sd_journal_sendv(iov: *const IoVec, n: c_int) -> c_int;
+
+    pub fn sd_journal_open(out_jrn: *mut JournalPtr, flags: c_int) -> c_int;
+    pub fn sd_journal_close(jrn: JournalPtr);
 }

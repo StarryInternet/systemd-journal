@@ -2,7 +2,7 @@
 
 use std::{fmt::Write as _, sync::Mutex};
 
-use crate::ffi;
+use crate::{ffi, reader::JournalReader};
 
 /// Log priority levels.
 #[repr(i32)]
@@ -76,6 +76,12 @@ impl Journal {
         imp.set_priority(pri);
         imp.set_message(msg);
         imp.send()
+    }
+
+    /// Opens the journal for reading, returning a handle for reading journal entries.
+    pub fn read(&self) -> std::io::Result<JournalReader> {
+        let flags = 0;
+        JournalReader::open(flags)
     }
 }
 
