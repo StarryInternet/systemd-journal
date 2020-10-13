@@ -60,3 +60,22 @@ macro_rules! warn {
 macro_rules! error {
     ($jrn:expr, $($arg:tt)*) => ($jrn.send($crate::Priority::Err, format_args!($($arg)*)))
 }
+
+/// Initializes the global logger with a the given `systemd` journal logger. This function should
+/// only be called once.
+///
+/// # Arguments
+///
+/// * `jrn` - The journal handle to use for logging.
+#[cfg(feature = "log")]
+pub fn init_logger_with(jrn: Journal) {
+    let jrn = Box::leak(Box::new(jrn));
+    log::set_logger(jrn).expect("failed to set logger")
+}
+
+/// Initializes the global logger with a new `systemd` journal logger. This function should only be
+/// called once.
+#[cfg(feature = "log")]
+pub fn init_logger() {
+    init_logger_with(Journal::new());
+}
