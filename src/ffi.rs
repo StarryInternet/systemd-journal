@@ -1,4 +1,7 @@
-use std::{ffi::c_void, os::raw::c_int};
+use std::{
+    ffi::c_void,
+    os::raw::{c_char, c_int}
+};
 
 /// Identical to `struct iovec` from C's <uio.h>.
 #[repr(C)]
@@ -39,4 +42,12 @@ extern "C" {
 
     pub fn sd_journal_open(out_jrn: *mut JournalPtr, flags: c_int) -> c_int;
     pub fn sd_journal_close(jrn: JournalPtr);
+
+    pub fn sd_journal_next(jrn: JournalPtr) -> c_int;
+    pub fn sd_journal_get_data(
+        jrn: JournalPtr,
+        field: *const c_char,
+        out_data: *mut *const u8,
+        out_length: *mut usize
+    ) -> c_int;
 }

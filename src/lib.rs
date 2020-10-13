@@ -8,7 +8,7 @@ mod journal;
 mod reader;
 
 pub use journal::{Journal, Priority};
-pub use reader::JournalReader;
+pub use reader::{JournalEntry, JournalReader};
 
 /// Write a formatted log entry to the given `Journal` at log priority `Info`.
 ///
