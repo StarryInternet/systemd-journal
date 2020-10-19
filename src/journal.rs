@@ -6,6 +6,7 @@ use crate::{ffi, reader::JournalReader};
 
 /// Log priority levels.
 #[repr(i32)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug)]
 pub enum Priority {
     /// `LOG_EMERG` from <syslog.h>.
     Emerg = 0,
